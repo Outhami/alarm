@@ -11,15 +11,17 @@ const AnalogClock = () => {
 
   const clock = () => {
     let date = new Date();
-    let hh = date.getHours() * 30;
-    let mm = date.getMinutes() * 6;
-    let ss = date.getSeconds() * 6;
+    let hh = -date.getHours() * 30;
+    let mm = -date.getMinutes() * 6;
+    let ss = -date.getSeconds() * 6;
 
     setHour(`rotateZ(${hh + mm / 12}deg)`);
     setMinutes(`rotateZ(${mm}deg)`);
     setSeconds(`rotateZ(${ss}deg)`);
   };
+
   setInterval(clock, 1000);
+
   return (
     <div className="clock-circle">
       <FcAlarmClock className={`alarm-icon ${hasAlarm && 'active'}`} />

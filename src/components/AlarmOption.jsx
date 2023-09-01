@@ -3,12 +3,13 @@ import { minutesNumber, hourNumber } from '../utils/fixNumber';
 import useSelect from '../hooks/useSelect';
 import { AlarmContext } from '../context/Alarm';
 import './alarmOption.css';
+import SandClockSpinner from '../Loader/SandClock';
 
 const AlarmOption = () => {
   const [hour, setHour] = useSelect('Hour');
   const [minutes, setMinutes] = useSelect('Minutes');
   const [amPmOption, setAmPmOption] = useSelect('AM/PM');
-  const { setAlarmTime, pauseAlarm, hasAlarm, setHasAlarm } =
+  const { setAlarmTime, pauseAlarm, hasAlarm, setHasAlarm, showSpinner } =
     useContext(AlarmContext);
 
   const setAlarm = () => {
@@ -31,6 +32,7 @@ const AlarmOption = () => {
   return (
     <div className="option-container">
       <div className={`wrapper-option ${hasAlarm && 'disable'}`}>
+        {showSpinner && <SandClockSpinner isWider={true} />}
         <select {...setHour}>
           <option disabled value="Hour">
             Hour
@@ -62,6 +64,7 @@ const AlarmOption = () => {
       <button
         onClick={setAlarm}
         className={`setAlarm-btn ${hasAlarm && 'play'}`}
+        disabled={showSpinner}
       >
         {hasAlarm ? 'Clear Alarm' : 'Set Alarm'}
       </button>

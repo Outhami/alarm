@@ -14,9 +14,10 @@ function Alarm({ children }) {
   const [yearNow, setYearNow] = useState('');
   const [alarmTime, setAlarmTime] = useState('');
   const [hasAlarm, setHasAlarm] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
 
   useEffect(() => {
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       let date = new Date();
       let HH = date.getHours();
       let MM = date.getMinutes();
@@ -41,8 +42,18 @@ function Alarm({ children }) {
       setDayNow(day);
       setMonthNow(months[month]);
       setYearNow(year);
+
+      const currentTime = new Date();
+      const currentSecond = currentTime.getSeconds();
+
+      if (currentSecond >= hourDigital && currentSecond < 60) {
+        setShowSpinner(true);
+      } else {
+        setShowSpinner(false);
+      }
     }, 1000);
-  }, []);
+    return () => clearInterval(intervalId);
+  }, [hourDigital, minutesDigital]);
 
   if (alarmTime === `${hourDigital}:${minutesDigital} ${amPm}`) {
     alarm.play();
@@ -66,6 +77,7 @@ function Alarm({ children }) {
         pauseAlarm,
         hasAlarm,
         setHasAlarm,
+        showSpinner,
       }}
     >
       {children}
